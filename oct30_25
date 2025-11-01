@@ -1,0 +1,30 @@
+'''30 oct 2025
+Replace O's with X's'''
+
+import collections
+class Solution:
+    def fill(self, grid):
+        R, C = len(grid), len(grid[0])
+        q = collections.deque()
+        surrounded = [[True] * C for _ in range(R)]
+        for i in range(R):
+            for j in range(C):
+                if (i == 0 or i == R-1 or j == 0 or j == C-1):
+                    if grid[i][j] == 'O':
+                        surrounded[i][j] = False
+                        q.append((i, j))
+        while len(q) > 0:
+            x, y = q.popleft()
+            for dx, dy in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < R and 0 <= ny < C:
+                    if grid[nx][ny] == 'O' and surrounded[nx][ny] == True:
+                        surrounded[nx][ny] = False
+                        q.append((nx, ny))
+        for i in range(R):
+            for j in range(C):
+                if surrounded[i][j]:
+                    grid[i][j] = 'X'
+                else:
+                    grid[i][j] = 'O'
+        return grid
