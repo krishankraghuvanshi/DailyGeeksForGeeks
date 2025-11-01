@@ -1,0 +1,43 @@
+'''1 Nov 2025
+Course Schedule II'''
+
+import collections
+class Solution:
+    def findOrder(self, n, prerequisites):
+        
+        adj = collections.defaultdict(list)
+        
+        indegree = [0] * n
+        
+        for u, v in prerequisites:
+            adj[v].append(u)
+            indegree[u] += 1
+        # print(indegree)
+        
+        q = collections.deque()
+        
+        for i in range(n):
+            if indegree[i] == 0:
+                q.append(i)
+        
+        order = []            
+        while len(q) > 0:
+            k = len(q)
+            while k > 0:
+                rem = q.popleft()
+                order.append(rem)
+                for nei in adj[rem]:
+                    indegree[nei] -= 1
+                    if indegree[nei] == 0:
+                        q.append(nei)
+                k -= 1        
+        if len(q) > 0:
+            return []
+        # else:
+        #     return True
+        return order
+                
+        
+            
+        
+        
