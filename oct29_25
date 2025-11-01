@@ -1,0 +1,32 @@
+'''29 oct 2025
+Distance of nearest cell having 1'''
+
+
+import collections
+
+class Solution:
+    def nearest(self, grid):
+        R = len(grid)
+        C = len(grid[0])
+        q = collections.deque()
+
+
+        INF = 10 ** 20
+        ans = [[INF] * C for _ in range(R)]
+        
+        for i in range(R):
+            for j in range(C):
+                if grid[i][j] == 1:
+                    q.append((i, j, 0))
+                    ans[i][j] = 0
+
+        while len(q) > 0:
+            x, y, w = q.popleft()
+
+            for dx, dy in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < R and 0 <= ny < C and ans[nx][ny] > w + 1:
+                    ans[nx][ny] = w + 1
+                    q.append((nx, ny, w + 1))
+
+        return ans
